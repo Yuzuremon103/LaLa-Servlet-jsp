@@ -56,7 +56,7 @@ public class FormSampleServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("<html>");
 		out.println("<head>");
-		out.println("<met charset=\"UTF-8\">");
+		out.println("<meta charset=\"UTF-8\">");
 		out.println("<title>ユーザー登録結果</title>");
 		out.println("</head>");
 		out.println("<body>");
