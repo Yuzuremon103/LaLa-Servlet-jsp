@@ -1,0 +1,13 @@
+model
+		Health.java
+		HEalthCheckLogic.java
+		
+servlet
+		HealthCheck.java
+		
+util
+		Tool.java
+		
+WebContent/WEB-INF/jsp
+		healthCheck.jsp
+		healthCheckResult.jsp
