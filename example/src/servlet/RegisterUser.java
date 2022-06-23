@@ -43,11 +43,21 @@ public class RegisterUser extends HttpServlet {
 			
 			// 登録処理の呼び出し
 			RegisterUserLogic logic = new RegisterUserLogic();
-			logic.execute(registerUser);
+			String msg = "";
+			if (logic.execute(registerUser)) {
+				msg = "登録完了しました";
+			} else {
+				msg = "登録に失敗しました";
+			}
 			
 			
 			// 不要となったセッションスコープ内のインスタンスを削除
-			session.removeAttribute("registerUser");
+//			session.removeAttribute("registerUser");
+			session.invalidate();   // セッションの破棄
+			
+			
+			// リクエストスコープにて送信
+			request.setAttribute("msg", msg);
 			
 			
 			// 登録後のフォワード先を設定
@@ -69,13 +79,30 @@ public class RegisterUser extends HttpServlet {
 		String pass = request.getParameter("pass");
 		
 		
-		// 登録するユーザーの情報を設定
-		User registerUser = new User(id, name, pass);
-		
-		
-		// セッションスコープに登録ユーザーを保存
-		HttpSession session = request.getSession();
-		session.setAttribute("registerUser", registerUser);
+		if(id != null && id.length() > 0 
+				&& name != null && name.length() > 0 
+				&& pass != null && pass.length() > 0) {
+			
+			
+			// 登録するユーザーの情報を設定
+			User registerUser = new User(id, name, pass);
+			
+			
+			// セッションスコープに登録ユーザーを保存
+			HttpSession session = request.getSession();
+			session.setAttribute("registerUser", registerUser);
+			session.removeAttribute("errMsg");
+			
+			
+			// フォワード
+			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/registerConfirm.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			String errMsg = "未入力の項目があります";
+			HttpSession session = request.getSession();
+			session.setAttribute("errMsg", errMsg);
+			response.sendRedirect("/example/RegisterUser");
+		}
 	}
 
 }

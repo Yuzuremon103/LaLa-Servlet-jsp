@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="ex.Fruit" %>
+
+
+<!-- Fruit fruit = (Fruit) request.getAttribute("fruit"); 
+	 Fruit f = (Fruit) session.getAttribute("fruit");	 -->
 <%
-// リクエストスコープに保存されたfruitインスタンスを取得
-Fruit fruit = (Fruit) request.getAttribute("fruit");
+//リクエストスコープに保存されたfruitインスタンスを取得
+Fruit fruit = (Fruit) application.getAttribute("fruit");
 %>
 <!DOCTYPE html>
 <html>
