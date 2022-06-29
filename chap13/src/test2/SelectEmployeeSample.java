@@ -2,15 +2,15 @@ package test2;
 
 import java.util.List;
 
-import dao.EmployeeDAO;
 import model.Employee;
+import model.GetEmployeeListLogic;
 
 public class SelectEmployeeSample {
 
 	public static void main(String[] args) {
 		// employeeテーブルの全レコードを取得
-		EmployeeDAO empDAO = new EmployeeDAO();
-		List<Employee> empList = empDAO.findAll();
+		GetEmployeeListLogic logic = new GetEmployeeListLogic();
+		List<Employee> empList = logic.execute();
 		
 		
 		// 取得したレコードの内容を出力
