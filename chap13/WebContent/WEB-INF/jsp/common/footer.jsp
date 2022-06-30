@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 
 <footer>
-	<small>Copyright &copy; 2022 Hiroki Maeda</small>
+	<small>Copyright &copy; 2022 MMCompany</small>
 </footer>

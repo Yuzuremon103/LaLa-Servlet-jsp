@@ -12,6 +12,10 @@ public class Employee {
 		this.age = age;
 	}
 
+	public String toString() {
+		return id + " : " + name + " : " + age;
+	}
+	
 
 	public String getId() {
 		return id;

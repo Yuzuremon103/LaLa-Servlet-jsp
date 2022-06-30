@@ -1,0 +1,29 @@
+
+/input --> サーブレット InputEmpServlet.java
+                         doGet()
+
+       --> JSP          inputEmp.jsp
+                        <form action="/inputConfirm">
+
+/inputConfirm  -->
+         サーブレット InputConfirmServlet.java
+                       doPost()
+                       データを受け取る
+                       整合性チェック(バリデート)
+
+       --> JSP        inputConfirm.jsp
+                        入力されたデータの表示
+                        確認
+
+/inputRegister -->
+        サーブレット InputRegisterServlet.java
+                        確認されたデータを受け取る
+                        データベースに保存
+
+       --> JSP       inputRegister.jsp
+                        登録しました。
+                        
+                       
+                       
+
+;; 修正時刻: Thu 2022/06/30 11:01:16

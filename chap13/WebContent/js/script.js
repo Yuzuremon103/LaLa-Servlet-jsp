@@ -9,10 +9,12 @@
  
  
  menu_btn.onclick = function() {
-	if(menu_area.style.display === 'none'){
-		menu_area.style.display = "block";
-	} else {
-		menu_area.style.display = "none";
+	if(window.innerWidth < 768) {
+		if(menu_area.style.display === 'none'){
+			menu_area.style.display = "block";
+		} else {
+			menu_area.style.display = "none";
+		}
 	}
 }
  

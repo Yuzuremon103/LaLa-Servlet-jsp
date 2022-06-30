@@ -61,5 +61,28 @@ public class EmployeeDAO {
 		}
 		return true;
 	}
+	
+	
+	/**
+	 * IDが存在するかどうかを調べる
+	 * @param id
+	 * @return true  存在する<br>
+	 *          false 存在しない
+	 */ 
+	public boolean isExistsId(String id) {
+		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			String sql = "SELECT id FROM employee WHERE id = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, id);
+			ResultSet rs = pStmt.executeQuery();
+			if(rs.next()) {
+				return true;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+//			return false;
+		}
+		return false;
+	}
 
 }
