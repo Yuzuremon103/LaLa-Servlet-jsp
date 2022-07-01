@@ -25,6 +25,11 @@ th, td {
 	padding-right: 5px;
 }
 
+.no-border {
+	border: none;
+}
+
+
 header, footer {
 	background-color: gray;
 }
@@ -72,6 +77,15 @@ footer {
 	display: none;
 }
 
+.img-btn {
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	width: 45px;
+	height: 45px;
+	padding-right: 0;
+	padding-left: 0;
+}
 
 
 

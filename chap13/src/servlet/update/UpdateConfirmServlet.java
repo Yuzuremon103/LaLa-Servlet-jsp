@@ -1,4 +1,4 @@
-package servlet.create;
+package servlet.update;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,20 +14,20 @@ import model.Employee;
 import util.GetParam;
 import util.validate;
 
-@WebServlet("/inputConfirm")
-public class InputConfirmServlet extends HttpServlet {
+@WebServlet("/updateConfirm")
+public class UpdateConfirmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Employee emp = GetParam.receive(request);
 		System.out.println(emp);
-		List<String> errMsgList = validate.check(emp, "create");
+		List<String> errMsgList = validate.check(emp, "update");
 		String url = null;
 		if(errMsgList.size() > 0) {
 			request.setAttribute("errMsgList", errMsgList);
-			url = "/WEB-INF/jsp/create/inputEmp.jsp";
+			url = "/WEB-INF/jsp/update/updateEmp.jsp";
 		} else {
-			url = "/WEB-INF/jsp/create/inputConfirm.jsp";
+			url = "/WEB-INF/jsp/update/updateConfirm.jsp";
 		}
 		request.setAttribute("emp", emp);
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);

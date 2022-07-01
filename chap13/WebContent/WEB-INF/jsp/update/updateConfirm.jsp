@@ -11,7 +11,7 @@
 	<main id="main">
 		<jsp:include page="/WEB-INF/jsp/common/aside.jsp" />
 		<article id="main-content">
-			<h1>新規社員登録確認</h1>
+			<h1>社員更新処理確認</h1>
 			<table>
 				<tr>
 					<th>ID</th>
@@ -27,11 +27,11 @@
 				</tr>	
 				
 			</table>
-			<form action="<%= request.getContextPath() %>/inputRegister" method="post">
+			<form action="<%= request.getContextPath() %>/updateRegister" method="post">
 				<input type="hidden" name="id" value='<c:out value="${emp.id}" />'>
 				<input type="hidden" name="name" value='<c:out value="${emp.name}" />'>
 				<input type="hidden" name="age" value='<c:out value="${emp.age}" />'>
-				<button type="submit" class="submit-btn">登録</button>
+				<button type="submit" class="submit-btn">更新</button>
 				<a href="<%= request.getContextPath() %>/list">
 					<button type="button" class="cancel-btn">戻る</button>
 				</a>

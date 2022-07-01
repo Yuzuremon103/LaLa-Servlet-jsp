@@ -7,7 +7,7 @@ import model.Employee;
 import model.IsExistsIdLogic;
 
 public class validate {
-	public static List<String> check(Employee emp) {
+	public static List<String> check(Employee emp, String mode) {
 		List<String> errMsgList = new ArrayList<>();
 		
 		// idのcheck
@@ -20,7 +20,7 @@ public class validate {
 		else if(! emp.getId().matches(Const.ID_PATTERN)) {
 			errMsgList.add(Messages.ID_FORM_ERR);
 		}
-		else if (isExistsId(emp.getId())) {
+		else if (mode.equals("create") && isExistsId(emp.getId())) {
 			errMsgList.add(Messages.ID_EXISTS_ERR);
 		}
 		

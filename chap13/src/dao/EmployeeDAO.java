@@ -84,5 +84,64 @@ public class EmployeeDAO {
 		}
 		return false;
 	}
+	
+	
+	public boolean create(Employee emp) {
+		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			String sql = "INSERT INTO employee (id, name, age) VALUES (?, ?, ?)"; // SQLインジェクション
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, emp.getId());
+			pStmt.setString(2, emp.getName());
+			pStmt.setInt(3, emp.getAge());
+			int result = pStmt.executeUpdate();  // 命令文を実行し、resultに格納する
+			if(result != 1) {
+				return false;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
+	public Employee findById(String _id) {
+		Employee emp = null;
+		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			String sql = "SELECT id, name, age FROM employee WHERE id = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, _id);
+			ResultSet rs = pStmt.executeQuery();  // 検索なのでQuery()の方。ResultSetも一緒に覚える
+			if(rs.next()) {
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				int age = rs.getInt("age");
+				emp = new Employee(id, name, age);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;   // データを何も取得できませんでした。
+		}
+		return emp;
+	}
+	
+	public boolean update(Employee emp) {
+		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			String sql = "UPDATE employee SET name = ?, age = ? WHERE id = ?)"; // SQLインジェクション
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, emp.getName());
+			pStmt.setInt(2, emp.getAge());
+			pStmt.setString(3, emp.getId());
+			int result = pStmt.executeUpdate();  // 命令文を実行し、resultに格納する
+			if(result != 1) {  // 変更点は1件のみなので1でなければfalse
+				return false;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
 
 }

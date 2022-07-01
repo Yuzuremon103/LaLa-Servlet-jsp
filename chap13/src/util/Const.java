@@ -8,4 +8,10 @@ public class Const {
 	
 	public static final int AGE_MIN = 15;
 	public static final int AGE_MAX = 90;
+	
+	
+	public static final String IMG_PENCIL = "/img/pencil.png";
+	public static final String IMG_TRASH = "/img/trash.png";
+	public static final String IMG_FIND = "/img/find.png";
+	public static final String IMG_CHECK = "/img/check.png";
 }

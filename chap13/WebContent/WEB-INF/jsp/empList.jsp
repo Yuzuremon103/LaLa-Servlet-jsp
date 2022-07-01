@@ -17,14 +17,32 @@
 					<th>ID</th>
 					<th>名前</th>
 					<th>年齢</th>
-					<c:forEach var="emp" items="${empList}">
-						<tr>
-							<td><c:out value="${emp.id}" /></td>
-							<td><c:out value="${emp.name}" /></td>
-							<td><c:out value="${emp.age}" /></td>
-						</tr>
-					</c:forEach>
+					<th class="no-border"></th>
+					<th class="no-border"></th>
 				</tr>
+				<c:forEach var="emp" items="${empList}">
+					<tr>
+						<td><c:out value="${emp.id}" /></td>
+						<td><c:out value="${emp.name}" /></td>
+						<td><c:out value="${emp.age}" /></td>
+						<td class="no-border">
+							<form action="<%= request.getContextPath() %>/update" method="post">
+								<input type="hidden" name="id" value='<c:out value="${emp.id}" />'>
+								<button type="submit" class="img-btn">
+									<img src="<%= request.getContextPath() %>${pencil_png}" alt="編集">
+								</button>
+							</form>
+						</td>
+						<td class="no-border">
+							<form action="<%= request.getContextPath() %>/delete" method="post">
+								<input type="hidden" name="id" value='<c:out value="${emp.id}" />'>
+								<button type="submit" class="img-btn">
+									<img src="<%= request.getContextPath() %>${trash_png}" alt="削除">
+								</button>
+							</form>
+						</td>
+					</tr>
+				</c:forEach>
 			</table>
 		</article>
 	</main>

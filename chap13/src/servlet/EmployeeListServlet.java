@@ -22,6 +22,10 @@ public class EmployeeListServlet extends HttpServlet {
 		List<Employee> empList = logic.execute();
 		request.setAttribute("empList", empList);
 		
+//		request.setAttribute("pencil_png", Const.IMG_PENCIL);
+//		request.setAttribute("trash_png", Const.IMG_TRASH);
+		
+		
 		String url = "/WEB-INF/jsp/empList.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
