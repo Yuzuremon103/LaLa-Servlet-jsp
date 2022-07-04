@@ -25,9 +25,15 @@ public class InputConfirmServlet extends HttpServlet {
 		String url = null;
 		if(errMsgList.size() > 0) {
 			request.setAttribute("errMsgList", errMsgList);
-			url = "/WEB-INF/jsp/create/inputEmp.jsp";
+			request.setAttribute("title", "新規社員登録");
+			request.setAttribute("goToUrl", "/inputConfirm");
+			request.setAttribute("mode", "create");
+			url = "/WEB-INF/jsp/editEmp.jsp";
 		} else {
-			url = "/WEB-INF/jsp/create/inputConfirm.jsp";
+			request.setAttribute("title", "新規社員登録");
+			request.setAttribute("goToUrl", "/inputRegister");
+			request.setAttribute("submitBtnLabel", "登録");
+			url = "/WEB-INF/jsp/confirmEmp.jsp";
 		}
 		request.setAttribute("emp", emp);
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);

@@ -127,7 +127,7 @@ public class EmployeeDAO {
 	
 	public boolean update(Employee emp) {
 		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-			String sql = "UPDATE employee SET name = ?, age = ? WHERE id = ?)"; // SQLインジェクション
+			String sql = "UPDATE employee SET name = ?, age = ? WHERE id = ?"; // SQLインジェクション
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, emp.getName());
 			pStmt.setInt(2, emp.getAge());

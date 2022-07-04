@@ -25,9 +25,15 @@ public class UpdateConfirmServlet extends HttpServlet {
 		String url = null;
 		if(errMsgList.size() > 0) {
 			request.setAttribute("errMsgList", errMsgList);
-			url = "/WEB-INF/jsp/update/updateEmp.jsp";
+			request.setAttribute("title", "社員情報更新");
+			request.setAttribute("goToUrl", "/updateConfirm");
+			request.setAttribute("mode", "update");
+			url = "/WEB-INF/jsp/editEmp.jsp";
 		} else {
-			url = "/WEB-INF/jsp/update/updateConfirm.jsp";
+			request.setAttribute("title", "社員情報更新");
+			request.setAttribute("goToUrl", "/updateRegister");
+			request.setAttribute("submitBtnLabel", "更新");
+			url = "/WEB-INF/jsp/confirmEmp.jsp";
 		}
 		request.setAttribute("emp", emp);
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);

@@ -19,7 +19,11 @@ public class GetUrlServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String url = "/WEB-INF/jsp/create/inputEmp.jsp";
+		request.setAttribute("title", "新規社員登録");
+		request.setAttribute("goToUrl", "/inputConfirm");
+		request.setAttribute("mode", "create");
+		
+		String url = "/WEB-INF/jsp/editEmp.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 		
@@ -36,9 +40,15 @@ public class GetUrlServlet extends HttpServlet {
 		String path = request.getServletPath();  // 今どのURLパターンできたかを調べる
 		String url = "";
 		if(path.equals("/update")) { // 編集(えんぴつ)押したとき
-			url = "/WEB-INF/jsp/update/updateEmp.jsp";
+			request.setAttribute("title", "社員情報更新");
+			request.setAttribute("goToUrl", "/updateConfirm");
+			request.setAttribute("mode", "update");
+			url = "/WEB-INF/jsp/editEmp.jsp";
 		} else if(path.equals("/delete")) {  // 削除(ゴミ箱)押したとき
-//			url = "/WEB-INF/jsp/delete/deleteEmp.jsp";
+			request.setAttribute("title", "社員情報削除");
+			request.setAttribute("goToUrl", "/deleteDone");
+			request.setAttribute("submitBtnLabel", "delete");
+			url = "/WEB-INF/jsp/confirmEmp.jsp";
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}

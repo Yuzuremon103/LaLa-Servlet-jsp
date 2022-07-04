@@ -11,7 +11,7 @@
 	<main id="main">
 		<jsp:include page="/WEB-INF/jsp/common/aside.jsp" />
 		<article id="main-content">
-			<h1>新規社員登録</h1>
+			<h1>${title}</h1>
 			<c:if test="${not empty errMsgList}">
 				<ul>
 					<c:forEach var="errMsg" items="${errMsgList}">
@@ -19,12 +19,21 @@
 					</c:forEach>
 				</ul>
 			</c:if>
-			<form action="<%= request.getContextPath() %>/inputConfirm" method="post">
+			<form action="${pageContext.request.contextPath}${goToUrl}" method="post">
+			<!--                  chap13のこと               /inputConfirmのこと        -->
 				<table>
 					<tr>
 						<th>ID</th>
 						<td>
-							<input class="indata" type="text" name="id" value='<c:out value="${emp.id}" />'>
+							<c:choose>
+								<c:when test="${mode == 'update'}">
+									<c:out value="${emp.id}" />
+									<input type="hidden" name="id" value='<c:out value="${emp.id}" />'>
+								</c:when>
+								<c:otherwise>
+									<input class="indata" type="text" name="id" value='<c:out value="${emp.id}" />'>
+								</c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 					<tr>
