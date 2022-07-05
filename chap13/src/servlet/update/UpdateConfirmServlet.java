@@ -33,6 +33,7 @@ public class UpdateConfirmServlet extends HttpServlet {
 			request.setAttribute("title", "社員情報更新");
 			request.setAttribute("goToUrl", "/updateRegister");
 			request.setAttribute("submitBtnLabel", "更新");
+			request.setAttribute("fix_link", "/fix_update");
 			url = "/WEB-INF/jsp/confirmEmp.jsp";
 		}
 		request.setAttribute("emp", emp);

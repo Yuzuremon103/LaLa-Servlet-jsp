@@ -18,7 +18,8 @@ public class SetImgListener implements ServletContextListener {
     	ServletContext context = sce.getServletContext();
 		context.setAttribute("pencil_png", Const.IMG_PENCIL);
 		context.setAttribute("trash_png", Const.IMG_TRASH);
-
+		context.setAttribute("find_png", Const.IMG_FIND);
+		context.setAttribute("check_png", Const.IMG_CHECK);
     }
 	
 }

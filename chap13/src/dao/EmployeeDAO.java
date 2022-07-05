@@ -24,7 +24,7 @@ public class EmployeeDAO {
 		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
 			
 			// SELECT文を準備
-			String sql = "SELECT id, name, age FROM employee";
+			String sql = "SELECT id, name, age FROM employee ORDER BY id ASC";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			
 			// SELECTを実行し、結果表を取得
@@ -142,6 +142,29 @@ public class EmployeeDAO {
 		}
 		
 		return true;
+	}
+	
+	public List<Employee> findByName(String _name) {
+		List<Employee> empList = new ArrayList<>();
+		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+			String sql = "SELECT id, name, age FROM employee WHERE name LIKE ?"
+					 + "ORDER BY id ASC"; // =が完全一致、likeが部分一致
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			_name = "%" + _name + "%";
+			pStmt.setString(1, _name);
+			ResultSet rs = pStmt.executeQuery();  // 検索なのでQuery()の方。ResultSetも一緒に覚える
+			while(rs.next()) {
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				int age = rs.getInt("age");
+				Employee emp = new Employee(id, name, age);
+				empList.add(emp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;   // データを何も取得できませんでした。
+		}
+		return empList;
 	}
 
 }

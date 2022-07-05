@@ -14,6 +14,10 @@ ul {
 	list-style-type: none;
 }
 
+button {
+	cursor: pointer;
+}
+
 table {
 	border-collapse: collapse;
 	margin-bottom: 20px;
@@ -64,10 +68,6 @@ footer {
 	margin-bottom: 45px;
 }
 
-#sub-content h2 {
-	text-align: right;
-}
-
 #menu-btn {
 	cursor: pointer;
 	display: inline-block;
@@ -85,6 +85,43 @@ footer {
 	height: 45px;
 	padding-right: 0;
 	padding-left: 0;
+}
+
+/*********************************************************
+
+	aside
+
+*********************************************************/
+#sub-content li {
+	margin-bottom: 10px;
+}
+
+#sub-content h2 {
+	text-align: right;
+}
+
+.newEmp {
+	font-size: 1.5em;
+	color: #444;
+}
+
+.seach-form {
+	border: solid 1px #ddd;
+}
+
+.seach-box {
+	width: calc(100% - 55px);
+	line-height: 45px;
+	font-size: 1.5em;
+	border: none;
+}
+
+.seach-box:focus {
+	outline: none;
+}
+
+.seach-img {
+	vertical-align: middle;
 }
 
 
@@ -129,18 +166,23 @@ footer {
 		display: flex;
 		flex-direction: row-reverse;
 		width: 80%;
-		margin: 0 auto;
+		margin: 0 auto 45px;
 	}
 	
 	#main-content {
-		flex-basis: 80%;
+		flex-basis: 70%;
 	}
 	
 	#sub-content {
-		flex-basis: 20%;
+		flex-basis: 30%;
 	}
 	
+	#sub-content h2 {
+		text-align: left;
+	}
+
 	#menu-area {
 		display: block;
 	}
+	
 }

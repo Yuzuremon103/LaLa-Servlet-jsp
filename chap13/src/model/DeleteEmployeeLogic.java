@@ -1,7 +1,6 @@
-package servlet;
+package model;
 
 import dao.EmployeeDAO;
-import model.Employee;
 import model.interf.EmployeeLogic;
 
 public class DeleteEmployeeLogic implements EmployeeLogic {

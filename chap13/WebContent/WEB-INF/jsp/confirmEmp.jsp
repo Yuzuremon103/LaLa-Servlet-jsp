@@ -32,9 +32,20 @@
 				<input type="hidden" name="name" value='<c:out value="${emp.name}" />'>
 				<input type="hidden" name="age" value='<c:out value="${emp.age}" />'>
 				<button type="submit" class="submit-btn">${submitBtnLabel}</button>
-				<a href="${pageContext.request.contextPath}/list">
-					<button type="button" class="cancel-btn">戻る</button>
-				</a>
+				<!-- ↑更新,削除など -->
+				
+				<c:choose>
+					<c:when test="${mode == 'delete'}">
+						<a href="${pageContext.request.contextPath}/list">
+							<button class="cancel-btn" type="button">戻る</button>
+						</a>
+					</c:when>
+					<c:otherwise>
+						<button formaction="${pageContext.request.contextPath}${fix_link}"
+						 type="submit" class="cancel-btn">戻る
+						</button>
+					</c:otherwise>
+				</c:choose>
 			</form>
 		</article>
 	</main>

@@ -44,6 +44,13 @@
 					</tr>
 				</c:forEach>
 			</table>
+			<c:if test="${mode == 'seach'}">
+				<p>
+					<a href="${pageContext.request.contextPath}/list">
+						<button>一覧へ</button>
+					</a>
+				</p>
+			</c:if>
 		</article>
 	</main>
 	
