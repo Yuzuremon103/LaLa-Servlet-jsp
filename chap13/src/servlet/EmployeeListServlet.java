@@ -26,6 +26,7 @@ public class EmployeeListServlet extends HttpServlet {
 //		request.setAttribute("trash_png", Const.IMG_TRASH);
 		
 		
+		
 		String url = "/WEB-INF/jsp/empList.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
