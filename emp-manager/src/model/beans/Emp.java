@@ -19,8 +19,8 @@ public class Emp implements Serializable {
 	}
 	
 	
-	public String ToString() {
-		return "id : " + id + " name : " + name + "birthday : " + birthday + "dname : " + dept.getDname(); 
+	public String toString() {
+		return "id : " + id + "  name : " + name + "  birthday : " + birthday + "  dname : " + dept.getDname(); 
 	}
 	
 

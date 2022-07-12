@@ -1,26 +1,32 @@
--- > mysql -u empdb_user -p
--- > empdb_user
+-- > mysql -u word -p
+-- > word_user
 
 
 
 -- データベースの作成
 
-CREATE DATABASE IF NOT EXISTS emp_db;
+CREATE DATABASE IF NOT EXISTS word;
 
 
 
 -- データベースの使用宣言
 
-USE emp_db;
+USE word;
 
 
 -- DORP関連
 
-DROP TABLE IF EXISTS emp;   -- 定義するときはempが先
-DROP TABLE IF EXISTS dept;  -- empはdeptを参照しているのでempを先には消せない
+DROP TABLE IF EXISTS word;   -- 定義するときはempが先
+-- DROP TABLE IF EXISTS dept;  -- empはdeptを参照しているのでempを先には消せない
 
 
--- dept表の定義
+
+--  いったん断念
+
+
+
+
+-- word表の定義
 
 CREATE TABLE dept (
 	did CHAR(4) PRIMARY KEY,

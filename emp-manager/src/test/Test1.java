@@ -2,14 +2,18 @@ package test;
 
 import java.util.List;
 
-import dao.EmpDAO;
+import model.GetEmpListLogic;
 import model.beans.Emp;
 
 public class Test1 {
 
 	public static void main(String[] args) {
-		EmpDAO dao = new EmpDAO();
-		List<Emp> empList = dao.findAll();
+		GetEmpListLogic logic = new GetEmpListLogic();
+		List<Emp> empList = logic.execute();
+		
+		for(Emp emp : empList) {
+			System.out.println(emp);// Emp.javaにtoStringメソッドがあればSystem.out.println()が使える
+		}
 	}
 
 }
