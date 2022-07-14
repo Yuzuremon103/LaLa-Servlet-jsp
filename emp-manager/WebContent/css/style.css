@@ -33,6 +33,13 @@ th, td {
 	border: none;
 }
 
+.no-btn {
+	border: none;
+	background: transparent;
+}
+
+
+
 
 header, footer {
 	background-color: gray;

@@ -11,7 +11,7 @@
 	<main id="main">
 		<jsp:include page="/WEB-INF/jsp/common/aside.jsp"/>
 		<article id="main-content">
-			<h1>社員一覧</h1>
+			<h1>${title}</h1>
 			<table>
 				<tr>
 					<th>ID</th>

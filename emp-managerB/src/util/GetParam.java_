@@ -1,0 +1,15 @@
+package util;
+
+import javax.servlet.http.HttpServletRequest;
+
+import model.beans.Emp;
+
+public class GetParam {
+	public static Emp receive(HttpServletRequest request) {
+		String id = request.getParameter("id").toUpperCase();
+		String name = request.getParameter("name");
+		int age = Tool.myParseInt(request.getParameter("age"));
+		Emp emp = new Emp(id, name, age);
+		return emp;
+	}
+}

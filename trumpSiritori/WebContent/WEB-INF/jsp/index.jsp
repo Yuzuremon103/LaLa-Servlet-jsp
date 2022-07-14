@@ -3,8 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>トランプしりとり</title>
+	<meta charset="UTF-8">
+	<title>トランプしりとり</title>
+	<link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 	
@@ -16,13 +17,15 @@
 		<input type="text" name="text">
 		<input type="submit" value="しりとる ! ">
 	</form>
-	<c:if test="${not empty errorMsg}">
+<!-- <c:if test="${not empty errorMsg}">
 		<p style="color: red;">${errorMsg}</p>
 	</c:if>
 	<c:forEach var="mutter" items="${mutterList}">
 		<p><c:out value="${mutter.userName}" />:
 			<c:out value="${mutter.text}" /></p>
 	</c:forEach>
+	
+	-->
 	
 </body>
 </html>

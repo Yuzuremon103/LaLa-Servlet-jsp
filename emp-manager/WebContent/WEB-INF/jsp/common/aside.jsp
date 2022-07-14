@@ -7,7 +7,7 @@
 	</h2>
 	<div id="menu-area">
 		<ul>
-			<li><a class="newEmp" href="<%= request.getContextPath() %>/input">新規社員登録</a>
+			<li><a class="newEmp" href="<%= request.getContextPath() %>/create">新規社員登録</a>
 				<!--            ↑chap13のこと           ↑Webアノテーション -->
 			</li>
 			<li>

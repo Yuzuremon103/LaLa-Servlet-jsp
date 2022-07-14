@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Employee;
 import util.GetParam;
-import util.validate;
+import util.Validate;
 
 @WebServlet("/inputConfirm")
 public class InputConfirmServlet extends HttpServlet {
@@ -21,7 +21,7 @@ public class InputConfirmServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Employee emp = GetParam.receive(request);
 		System.out.println(emp);
-		List<String> errMsgList = validate.check(emp, "create");
+		List<String> errMsgList = Validate.check(emp, "create");
 		String url = null;
 		if(errMsgList.size() > 0) {
 			request.setAttribute("errMsgList", errMsgList);

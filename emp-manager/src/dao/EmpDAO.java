@@ -20,6 +20,8 @@ public class EmpDAO {
 			+ " 		ON e.dept_id = d.did"
 			+ " ORDER BY e.id ASC";       // SELECT文を使うときは ORDER BY は必需
 	
+	private final String SQL_IS_EXISTS_ID = "SELECT id FROM emp WHERE id = ?";
+	
 	
 	public List<Emp> findAll() {
 		List<Emp> empList = new ArrayList<>();
@@ -46,4 +48,29 @@ public class EmpDAO {
 		}
 		return empList;
 	}
+	
+	
+	
+	/**
+	 * IDが存在するかどうかを調べる
+	 * @param id
+	 * @return true  存在する<br>
+	 *          false 存在しない
+	 */ 
+	public boolean isExistsId(String id) {
+		try(Connection conn = DriverManager.getConnection(Const.JDBC_URL, Const.DB_USER, Const.DB_PASS)) {
+			PreparedStatement pStmt = conn.prepareStatement(SQL_IS_EXISTS_ID);
+			pStmt.setString(1, id);
+			ResultSet rs = pStmt.executeQuery();
+			if(rs.next()) {   // 1個でもあればnext()が動く
+				return true;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+//			return false;
+		}
+		return false;
+	}
+
+	
 }
