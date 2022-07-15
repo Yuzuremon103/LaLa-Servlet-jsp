@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +24,10 @@ public class EmpDAO {
 	
 	private final String SQL_IS_EXISTS_ID =
 					"SELECT id FROM emp WHERE id = ?";
+	
+	private final String SQL_CREATE = "INSERT INTO FROM emp WHERE (id, name, birthday, dept_id)"
+			+ " = VALUES (?, ?, ?, ?)";
+	
 
 	public List<Emp> findAll() {
 		List<Emp> empList = new ArrayList<>();
@@ -70,4 +75,31 @@ public class EmpDAO {
 		return false;
 	}
 	
+	
+	public boolean create(Emp emp) {
+		try (Connection conn = DriverManager.getConnection(
+				Const.JDBC_URL, Const.DB_USER, Const.DB_PASS)) {
+			PreparedStatement pStmt = conn.prepareStatement(SQL_CREATE);
+			pStmt.setString(1, emp.getId());
+			pStmt.setString(2, emp.getName());
+			pStmt.setDate(3, strToDate(emp.getBirthday()));
+			pStmt.setString(4, emp.getDept().getDid());
+			int result = pStmt.executeUpdate();
+			if (result != 1) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+
+	}
+
+	
+	// Date型のインポートはJava.sqlを指定する(データベースに格納するためにsql型が作られた)
+	private Date strToDate(String dateTxt) {
+		String txt = dateTxt.replaceAll("/", "-");
+		return Date.valueOf(txt);     // vakueOfメソッドでDate型に変換される
+	}
 }

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import servlet.sub.CreateEmp;
 import servlet.sub.GetEmpList;
 
-@WebServlet(urlPatterns = {"/list", "/create", "/createConfirm"})
+@WebServlet(urlPatterns = {"/list", "/create", "/createConfirm", "/fixInput", "createDone"})
 public class EmpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,6 +36,12 @@ public class EmpServlet extends HttpServlet {
 		switch (path) {
 		case "/createConfirm":
 			CreateEmp.confirm(request, response);
+			break;
+		case "/fixInput":
+			CreateEmp.fixInput(request, response);
+			break;
+		case "createDone":
+			CreateEmp.createDone(request, response);
 			break;
 		default:
 			response.sendRedirect(request.getContextPath() + "/404.html");

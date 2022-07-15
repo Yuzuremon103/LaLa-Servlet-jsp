@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 
 <footer>
-	<small>Copyright &copy; 2022 Seiichi Nukayama</small>
+	<small>Copyright &copy; 2022 MM Company</small>
 </footer>
