@@ -15,93 +15,151 @@ import javax.servlet.http.HttpServletResponse;
 import model.AddSiritoriListLogic;
 import model.Siritori;
 
-@WebServlet("/siritori")
+@WebServlet("/")
 public class MainSiritoriServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 秒速画面遷移
+		String url = "/WEB-INF/jsp/main.jsp";
+		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+		dispatcher.forward(request, response);
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// リクエストパラメータの取得
 		request.setCharacterEncoding("UTF-8");
 		String text = request.getParameter("text");
-		String lastChar = request.getParameter("lastChar");     // 最後の文字
-		
+		String lastChar = request.getParameter("lastChar");    // 最後の文字
+		String counter = request.getParameter("count");
+		String num = request.getParameter("num");
+		System.out.println("ランダムトランプnumは : " + num);
+		System.out.println(lastChar + "最後の文字");
 		String errorMsg = "";
 		
 		
-		if(lastChar.equals("")) {
-			// test
-			System.out.println("lastCharが来ていない");
+		// 初回はここを通る
+		if(counter.equals("") || counter.equals(null)) {
+			// countを数字に変換
+			counter = "1";
+			int count = Integer.parseInt(counter);           // 1回目
 			
-			// エラーメッセージをリクエストスコープに保存
-			errorMsg = "lastCharが送信されていません";
-			request.setAttribute("errorMsg", errorMsg);
+			lastChar = text.substring(text.length() - 1);     // 最後の文字
 			
-			// メイン画面にフォワード
-			String url = "/WEB-INF/jsp/index.jsp";
+			
+			// 投稿をしりとりリストに追加
+			List<Siritori> siritoriList = new ArrayList<>();
+			Siritori siritori = new Siritori(text);
+//			siritoriList.add(0, siritori);
+			AddSiritoriListLogic logic = new AddSiritoriListLogic();
+			logic.execute(siritori, siritoriList);
+			ServletContext application = this.getServletContext();
+			application.setAttribute("siritoriList", siritoriList);
+
+			
+			System.out.println("\n ============================ \n");
+			
+			request.setAttribute("count", count);
+			request.setAttribute("lastChar", lastChar);
+			String url = "/WEB-INF/jsp/main.jsp";
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
-
-		}
-		
-		
-		// 文字列の取り出し
-		char first = text.charAt(0);                 // 最初の文字
-		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
-		System.out.println(lastChar);
-		System.out.println(firstChar);
-		
-		// 入力値チェック
-		if(text != null && text.length() != 0) {
-			// test
-			System.out.println("");
 			
-			if(lastChar.equals(firstChar)) {
-				// test
-				System.out.println("しりとれた");
-				
-				
-				// アプリケーションスコープに保存された現存しりとりログを取得
-				ServletContext application = this.getServletContext();
-				List<Siritori> siritoriList = new ArrayList<>();
-				
-				
-				// 投稿をしりとりリストに追加
-				Siritori siritori = new Siritori(text);
-//				siritoriList.add(0, siritori);
-				AddSiritoriListLogic logic = new AddSiritoriListLogic();
-				logic.execute(siritori, siritoriList);
-				List<Siritori> siritoriList = (List<Sirirori>) application.getAttribute("siritori");
-
-			} else {
-				// test
-				System.out.println("しりを取ってください");
-			}
-			
-			
+		
+		// 2回目以降からこちら
 		} else {
-			// test
-			System.out.println("打ち込みに失敗");
-			
-			// エラーメッセージをリクエストスコープに保存
-			errorMsg = "しりとりが入力されていません";
-			request.setAttribute("errorMsg", errorMsg);
-		}
-			
-//		// しりとりリストを取得して、リクエストスコープに保存
-//		GetSiritoriListLogic getSiritoriListLogic = new GetSiritoriListLogic();
-//		List<Siritori> siritoriList = getSiritoriListLogic.execute();
-//		request.setAttribute("siritoriList", siritoriList);
-		
-		
-		
-		// 最後の文字を代入
-		lastChar = text.substring(text.length() - 1);     // 最後の文字
-		
-		// メイン画面にフォワード
-		String url = "/WEB-INF/jsp/index.jsp";
-		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		dispatcher.forward(request, response);
+			int count = Integer.parseInt(counter);
+			count += 1;
+            System.out.println(count + "回目"); // count = 2~
+            
+    		// lastCharがなければ通る
+    		if(lastChar.equals("") || lastChar.equals(null)) {
+    			// test
+    			System.out.println("lastCharが来ていない");
+    			
+    			// エラーメッセージをリクエストスコープに保存
+    			errorMsg = "lastCharが送信されていません";
+    			request.setAttribute("errorMsg", errorMsg);
+    			
+    			// メイン画面にフォワード
+    			String url = "/WEB-INF/jsp/main.jsp";
+    			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+    			dispatcher.forward(request, response);
 
-		session.setAttribute("last", lastChar);
+    		}
+    		
+    		
+    		// 文字列の取り出し
+    		char first = text.charAt(0);                 // 最初の文字
+    		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
+    		System.out.println("最後の文字 : " + lastChar);
+    		System.out.println("最初の文字 : " + firstChar);
+    		
+    		// 入力値チェック
+    		if(text != null && text.length() != 0) {       // 正常であればtrue
+    			// test
+    			System.out.println("textが通りました");
+    			
+    			// 最初と最後が同じかどうか
+    			if(lastChar.equals(firstChar)) {
+    				// test
+    				System.out.println("しりとれた");
+    				
+    				
+    				// アプリケーションスコープに保存された現存しりとりログを取得
+    				ServletContext application = this.getServletContext();
+    				
+    				@SuppressWarnings("unchecked")
+    				List<Siritori> siritoriList = (List<Siritori>) application.getAttribute("siritoriList");
+    				
+    				
+    				if(siritoriList == null) {
+    					siritoriList = new ArrayList<>();
+    				}
+    				
+    				
+    				// 投稿をしりとりリストに追加
+    				Siritori siritori = new Siritori(text);
+//    				siritoriList.add(0, siritori);
+    				AddSiritoriListLogic logic = new AddSiritoriListLogic();
+    				logic.execute(siritori, siritoriList);
+    				application.setAttribute("siritoriList", siritoriList);
+
+    			} else {
+    				// test
+    				System.out.println("しりを取ってください");
+    			}
+    			
+    			
+    		} else {
+    			// test
+    			System.out.println("打ち込みに失敗");
+    			
+    			// エラーメッセージをリクエストスコープに保存
+    			errorMsg = "しりとりが入力されていません";
+    			request.setAttribute("errorMsg", errorMsg);
+    		}
+    			
+//    		// しりとりリストを取得して、リクエストスコープに保存
+//    		GetSiritoriListLogic getSiritoriListLogic = new GetSiritoriListLogic();
+//    		List<Siritori> siritoriList = getSiritoriListLogic.execute();
+//    		request.setAttribute("siritoriList", siritoriList);
+    		
+    		
+    		
+    		// 1周終わりました
+    		System.out.println("\n ============================ \n");
+    		
+    		// 最後の文字をリクエストスコープへ
+    		lastChar = text.substring(text.length() - 1);     // 最後の文字
+//    		HttpSession session = request.getSession();
+    		request.setAttribute("lastChar", lastChar);
+			request.setAttribute("count", count);
+    		
+    		// メイン画面にフォワード
+    		String url = "/WEB-INF/jsp/main.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+    		dispatcher.forward(request, response);
+		}
 	}
 }

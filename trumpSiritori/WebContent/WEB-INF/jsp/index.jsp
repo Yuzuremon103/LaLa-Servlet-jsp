@@ -11,7 +11,7 @@
 	
 	<h1>みんなでトランプしりとり</h1>
 
-	<form action="<%= request.getContextPath() %>/siritori" method="post">
+	<form action="<%= request.getContextPath() %>/last" method="post">
 		<input type="text" name="text">
 		<input type="submit" value="しりとる ! ">
 	</form>

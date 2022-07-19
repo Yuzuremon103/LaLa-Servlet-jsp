@@ -1,9 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="model.Siritori" %>
+<%@ page import="java.util.List" %>
+<%
+// リクエストスコープから回数を表すcountを取得
+int count = (Integer) request.getAttribute("count");
+%>
 <%
 // リクエストスコープから最後の文字を取得
 String lastChar = (String) request.getAttribute("lastChar");
+%>
+<% // アプリケーションスコープに保存されたしりとりリストを取得
+List<Siritori> siritori = (List<Siritori>) application.getAttribute("siritoriList");
+%>
+<% // リクエストスコープに保存されたエラーメッセージを取得
+String errorMsg = (String) request.getAttribute("errorMsg");
 %>
 <!DOCTYPE html>
 <html>
@@ -15,23 +27,28 @@ String lastChar = (String) request.getAttribute("lastChar");
 <body>
 	
 	<h1>みんなでトランプしりとり</h1>
+	<p>${lastChar}</p>
 	
+	<%! int num = new java.util.Random().nextInt(13) + 1; %>
+	<img src="../img/card_<%=num%>.png" alt="ランダムトランプ">
 	
-	<p><a href="<%= request.getContextPath() %>/siritori">更新</a></p>
-	<form action="<%= request.getContextPath() %>/siritori" method="post">
+	<p><a href="<%= request.getContextPath() %>/">更新</a></p>
+	<form action="<%= request.getContextPath() %>/" method="post">
 		<input type="text" name="text">
 		<input type="hidden" name="lastChar" value="${lastChar}">
+		<input type="hidden" name="count" value="${count}">
+		<input type="hidden" name="num" value="<%=num%>>">
 		<input type="submit" value="しりとる ! ">
 	</form>
-<!-- <c:if test="${not empty errorMsg}">
+	
+	<c:if test="${not empty errorMsg}">
 		<p style="color: red;">${errorMsg}</p>
 	</c:if>
-	<c:forEach var="mutter" items="${mutterList}">
-		<p><c:out value="${mutter.userName}" />:
-			<c:out value="${mutter.text}" /></p>
-	</c:forEach>
 	
-	-->
+	
+	<c:forEach var="siritori" items="${siritoriList}">
+		<p><c:out value="${siritori.text}" /></p>
+	</c:forEach>
 	
 </body>
 </html>
