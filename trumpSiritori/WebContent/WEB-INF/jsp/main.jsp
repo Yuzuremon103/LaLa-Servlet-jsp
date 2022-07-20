@@ -26,28 +26,31 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 </head>
 <body>
 	
+	
 	<h1>みんなでトランプしりとり</h1>
 	<p>${lastChar}</p>
 	
-	<%! int num = new java.util.Random().nextInt(13) + 1; %>
-	<img src="../img/card_<%=num%>.png" alt="ランダムトランプ">
-	
-	<p><a href="<%= request.getContextPath() %>/">更新</a></p>
-	<form action="<%= request.getContextPath() %>/" method="post">
-		<input type="text" name="text">
-		<input type="hidden" name="lastChar" value="${lastChar}">
-		<input type="hidden" name="count" value="${count}">
-		<input type="hidden" name="num" value="<%=num%>>">
-		<input type="submit" value="しりとる ! ">
-	</form>
-	
+	<div id="flex">
+		<% int num = new java.util.Random().nextInt(13) + 1; %>
+		<img src="<%= request.getContextPath() %>/img/card<%= num %>.png" alt="ランダムトランプ">
+		
+		<p><a href="<%= request.getContextPath() %>/main">更新</a></p>
+		
+		<form action="<%= request.getContextPath() %>/main" method="post">
+			<input type="text" name="text">
+			<input type="hidden" name="lastChar" value="${lastChar}">
+			<input type="hidden" name="count" value="${count}">
+			<input type="hidden" name="num" value="<%= num %>">
+			<input type="submit" value="しりとる ! ">
+		</form>
+	</div>
 	<c:if test="${not empty errorMsg}">
 		<p style="color: red;">${errorMsg}</p>
 	</c:if>
 	
 	
 	<c:forEach var="siritori" items="${siritoriList}">
-		<p><c:out value="${siritori.text}" /></p>
+		<p><c:out value="${siritori.text}"/></p>
 	</c:forEach>
 	
 </body>

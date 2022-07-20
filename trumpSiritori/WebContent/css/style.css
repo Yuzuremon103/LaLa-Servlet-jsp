@@ -1,1 +1,11 @@
 @charset "UTF-8";
+
+
+img {
+	width: 20%;
+	height: 20%;
+}
+
+#flex {
+	display: flex;
+}
