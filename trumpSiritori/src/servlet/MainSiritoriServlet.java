@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.AddSiritoriListLogic;
 import model.NumLogic;
 import model.Siritori;
+import model.TextLogic;
 
 @WebServlet("/main")
 public class MainSiritoriServlet extends HttpServlet {
@@ -22,6 +23,8 @@ public class MainSiritoriServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 秒速画面遷移
+		int i = 70;
+		request.setAttribute("i", i);
 		String url = "/WEB-INF/jsp/main.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
@@ -34,9 +37,13 @@ public class MainSiritoriServlet extends HttpServlet {
 		String lastChar = request.getParameter("lastChar");    // 最後の文字
 		String counter = request.getParameter("count");        // 現在の回数
 		String num = request.getParameter("num");              // トランプの数字
-		int number = Integer.parseInt(num);                   // トランプの数字を数字化
+		String i = request.getParameter("i");                  // 残り秒数
+		int number = Integer.parseInt(num);                    // トランプの数字を数字化
 		int textLength = text.length();                        // textの文字数
+		int integer = Integer.parseInt(i);                     // 残り秒数をint化
+		
 		System.out.println("ランダムトランプnumは : " + num);
+		System.out.println("残り秒数 : " + integer);
 		System.out.println(lastChar + "最後の文字");
 		String errorMsg = "";
 		
@@ -48,6 +55,8 @@ public class MainSiritoriServlet extends HttpServlet {
 			int count = Integer.parseInt(counter);           // 1回目
 			
 			lastChar = text.substring(text.length() - 1);     // 最後の文字
+			lastChar = TextLogic.textLogic(lastChar, text);
+			System.out.println("今回の最後の文字" + lastChar);
 			
 			// numberが1,2,3のとき
 			if(number <= 3) {
@@ -65,13 +74,15 @@ public class MainSiritoriServlet extends HttpServlet {
 					
 					request.setAttribute("count", count);
 					request.setAttribute("lastChar", lastChar);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
 				} else {
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
-					request.setAttribute("lastChar", lastChar);
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
+//					request.setAttribute("lastChar", lastChar);
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -94,12 +105,14 @@ public class MainSiritoriServlet extends HttpServlet {
 					
 					request.setAttribute("count", count);
 					request.setAttribute("lastChar", lastChar);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
 				} else {
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -122,12 +135,14 @@ public class MainSiritoriServlet extends HttpServlet {
 					
 					request.setAttribute("count", count);
 					request.setAttribute("lastChar", lastChar);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
 				} else {
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -150,12 +165,14 @@ public class MainSiritoriServlet extends HttpServlet {
 					
 					request.setAttribute("count", count);
 					request.setAttribute("lastChar", lastChar);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
 				} else {
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -164,12 +181,35 @@ public class MainSiritoriServlet extends HttpServlet {
 // ============================================================================================
 		// 2回目以降からこちら
 		} else {
+			// counterが特定回数のとき(終わりの指定)
+			if(counter.equals("12")) {     // (終わらせたい数 - 1) *13人の場合は12
+				errorMsg = "Congratulations !!";
+				request.setAttribute("errorMsg", errorMsg);
+				
+				// アプリケーションスコープに保存された現存しりとりログを取得
+				ServletContext application = this.getServletContext();
+				
+				@SuppressWarnings("unchecked")
+				List<Siritori> siritoriList = (List<Siritori>) application.getAttribute("siritoriList");
+				
+				// 投稿をしりとりリストに追加
+				Siritori siritori = new Siritori(text);
+				AddSiritoriListLogic logic = new AddSiritoriListLogic();
+				logic.execute(siritori, siritoriList);
+				application.setAttribute("siritoriList", siritoriList);
+
+				String url = "/WEB-INF/jsp/main.jsp";
+				RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+				dispatcher.forward(request, response);
+			}
 			
+
+
 			// トランプの数字が1,2,3
 			if(number <= 3) {
 				
 	    		// 文字列の取り出し
-	    		char first = text.charAt(0);                 // 最初の文字
+	    		char first = text.charAt(0);                // 最初の文字
 	    		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
 	    		System.out.println("最後の文字 : " + lastChar);
 	    		System.out.println("最初の文字 : " + firstChar);
@@ -205,8 +245,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    	            
 	    	    		// 最後の文字をリクエストスコープへ
 	    	    		lastChar = text.substring(text.length() - 1);     // 最後の文字
+	    	    		lastChar = TextLogic.textLogic(lastChar, text);
 	    	    		request.setAttribute("lastChar", lastChar);
 	    				request.setAttribute("count", count);
+	    				request.setAttribute("i", integer);
 	    	    		
 	    	    		// メイン画面にフォワード
 	    	    		String url = "/WEB-INF/jsp/main.jsp";
@@ -219,13 +261,15 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
+						request.setAttribute("i", integer);
 						String url = "/WEB-INF/jsp/main.jsp";
 						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 1,2,3の終わり(elseへ)
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -272,8 +316,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    	            
 	    	    		// 最後の文字をリクエストスコープへ
 	    	    		lastChar = text.substring(text.length() - 1);     // 最後の文字
+	    	    		lastChar = TextLogic.textLogic(lastChar, text);
 	    	    		request.setAttribute("lastChar", lastChar);
 	    				request.setAttribute("count", count);
+	    				request.setAttribute("i", integer);
 	    	    		
 	    	    		// メイン画面にフォワード
 	    	    		String url = "/WEB-INF/jsp/main.jsp";
@@ -286,13 +332,15 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
+						request.setAttribute("i", integer);
 						String url = "/WEB-INF/jsp/main.jsp";
 						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 4,5,6の終わり(elseへ)
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -339,8 +387,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    	            
 	    	    		// 最後の文字をリクエストスコープへ
 	    	    		lastChar = text.substring(text.length() - 1);     // 最後の文字
+	    	    		lastChar = TextLogic.textLogic(lastChar, text);
 	    	    		request.setAttribute("lastChar", lastChar);
 	    				request.setAttribute("count", count);
+	    				request.setAttribute("i", integer);
 	    	    		
 	    	    		// メイン画面にフォワード
 	    	    		String url = "/WEB-INF/jsp/main.jsp";
@@ -353,13 +403,15 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
+						request.setAttribute("i", integer);
 						String url = "/WEB-INF/jsp/main.jsp";
 						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 7,8,9の終わり(elseへ)
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
@@ -406,8 +458,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    	            
 	    	    		// 最後の文字をリクエストスコープへ
 	    	    		lastChar = text.substring(text.length() - 1);     // 最後の文字
+	    	    		lastChar = TextLogic.textLogic(lastChar, text);
 	    	    		request.setAttribute("lastChar", lastChar);
 	    				request.setAttribute("count", count);
+	    				request.setAttribute("i", integer);
 	    	    		
 	    	    		// メイン画面にフォワード
 	    	    		String url = "/WEB-INF/jsp/main.jsp";
@@ -420,35 +474,20 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
+						request.setAttribute("i", integer);
 						String url = "/WEB-INF/jsp/main.jsp";
 						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 10~の終わり(elseへ)
-					errorMsg = "文字数が正しくありません。\nやり直しです。";
+					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
+					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
 					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 					dispatcher.forward(request, response);
 	            }
 			}
-
-
-    		// lastCharがなければ通る
-//    		if(lastChar.equals("") || lastChar.equals(null)) {
-//    			// test
-//    			System.out.println("lastCharが来ていない");
-//    			
-//    			// エラーメッセージをリクエストスコープに保存
-//    			errorMsg = "lastCharが送信されていません";
-//    			request.setAttribute("errorMsg", errorMsg);
-//    			
-//    			// メイン画面にフォワード
-//    			String url = "/WEB-INF/jsp/main.jsp";
-//    			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-//    			dispatcher.forward(request, response);
-//
-//    		}
 		}    // 2回目以降elseの終わり(何も続けない)
 	}
 }
