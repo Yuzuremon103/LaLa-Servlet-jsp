@@ -23,7 +23,7 @@ public class MainSiritoriServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 秒速画面遷移
-		int i = 70;
+		int i = 600;
 		request.setAttribute("i", i);
 		String url = "/WEB-INF/jsp/main.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -37,10 +37,10 @@ public class MainSiritoriServlet extends HttpServlet {
 		String lastChar = request.getParameter("lastChar");    // 最後の文字
 		String counter = request.getParameter("count");        // 現在の回数
 		String num = request.getParameter("num");              // トランプの数字
-		String i = request.getParameter("i");                  // 残り秒数
-		int number = Integer.parseInt(num);                    // トランプの数字を数字化
-		int textLength = text.length();                        // textの文字数
-		int integer = Integer.parseInt(i);                     // 残り秒数をint化
+		String i = request.getParameter("i");                   // 残り秒数
+		int number = Integer.parseInt(num);                   // トランプの数字を数字化
+		int textLength = text.length();                       // textの文字数
+		int integer = Integer.parseInt(i);                   // 残り秒数をint化
 		
 		System.out.println("ランダムトランプnumは : " + num);
 		System.out.println("残り秒数 : " + integer);
@@ -182,9 +182,11 @@ public class MainSiritoriServlet extends HttpServlet {
 		// 2回目以降からこちら
 		} else {
 			// counterが特定回数のとき(終わりの指定)
-			if(counter.equals("12")) {     // (終わらせたい数 - 1) *13人の場合は12
+			if(counter.equals("11")) {     // (終わらせたい数 - 1) *13人の場合は12
 				errorMsg = "Congratulations !!";
+				integer = 0;
 				request.setAttribute("errorMsg", errorMsg);
+				request.setAttribute("i", integer);
 				
 				// アプリケーションスコープに保存された現存しりとりログを取得
 				ServletContext application = this.getServletContext();
@@ -211,6 +213,7 @@ public class MainSiritoriServlet extends HttpServlet {
 	    		// 文字列の取り出し
 	    		char first = text.charAt(0);                // 最初の文字
 	    		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
+	    		firstChar = TextLogic.textLogic(firstChar, text);  // カナ変換
 	    		System.out.println("最後の文字 : " + lastChar);
 	    		System.out.println("最初の文字 : " + firstChar);
 	    		
@@ -259,6 +262,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				// test
 	    				System.out.println("しりを取ってください");
 	    				
+						List<Siritori> siritoriList = new ArrayList<>();
+						ServletContext application = this.getServletContext();
+						application.setAttribute("siritoriList", siritoriList);
+	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
 						request.setAttribute("i", integer);
@@ -268,6 +275,11 @@ public class MainSiritoriServlet extends HttpServlet {
 	    			}
 	            } else { // 1,2,3の終わり(elseへ)
 					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
+					
+					List<Siritori> siritoriList = new ArrayList<>();
+					ServletContext application = this.getServletContext();
+					application.setAttribute("siritoriList", siritoriList);
+
 					request.setAttribute("errorMsg", errorMsg);
 					request.setAttribute("i", integer);
 					String url = "/WEB-INF/jsp/main.jsp";
@@ -282,6 +294,7 @@ public class MainSiritoriServlet extends HttpServlet {
 	    		// 文字列の取り出し
 	    		char first = text.charAt(0);                 // 最初の文字
 	    		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
+	    		firstChar = TextLogic.textLogic(firstChar, text);  // カナ変換
 	    		System.out.println("最後の文字 : " + lastChar);
 	    		System.out.println("最初の文字 : " + firstChar);
 	    		
@@ -330,6 +343,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				// test
 	    				System.out.println("しりを取ってください");
 	    				
+						List<Siritori> siritoriList = new ArrayList<>();
+						ServletContext application = this.getServletContext();
+						application.setAttribute("siritoriList", siritoriList);
+	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
 						request.setAttribute("i", integer);
@@ -338,6 +355,10 @@ public class MainSiritoriServlet extends HttpServlet {
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 4,5,6の終わり(elseへ)
+					List<Siritori> siritoriList = new ArrayList<>();
+					ServletContext application = this.getServletContext();
+					application.setAttribute("siritoriList", siritoriList);
+
 					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
 					request.setAttribute("i", integer);
@@ -353,6 +374,7 @@ public class MainSiritoriServlet extends HttpServlet {
 	    		// 文字列の取り出し
 	    		char first = text.charAt(0);                 // 最初の文字
 	    		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
+	    		firstChar = TextLogic.textLogic(firstChar, text);  // カナ変換
 	    		System.out.println("最後の文字 : " + lastChar);
 	    		System.out.println("最初の文字 : " + firstChar);
 	    		
@@ -401,6 +423,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				// test
 	    				System.out.println("しりを取ってください");
 	    				
+						List<Siritori> siritoriList = new ArrayList<>();
+						ServletContext application = this.getServletContext();
+						application.setAttribute("siritoriList", siritoriList);
+	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
 						request.setAttribute("i", integer);
@@ -409,6 +435,10 @@ public class MainSiritoriServlet extends HttpServlet {
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 7,8,9の終わり(elseへ)
+					List<Siritori> siritoriList = new ArrayList<>();
+					ServletContext application = this.getServletContext();
+					application.setAttribute("siritoriList", siritoriList);
+
 					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
 					request.setAttribute("i", integer);
@@ -424,6 +454,7 @@ public class MainSiritoriServlet extends HttpServlet {
 	    		// 文字列の取り出し
 	    		char first = text.charAt(0);                 // 最初の文字
 	    		String firstChar = String.valueOf(first);   // 最初の文字をcharからStringに
+	    		firstChar = TextLogic.textLogic(firstChar, text);  // カナ変換
 	    		System.out.println("最後の文字 : " + lastChar);
 	    		System.out.println("最初の文字 : " + firstChar);
 	    		
@@ -472,6 +503,10 @@ public class MainSiritoriServlet extends HttpServlet {
 	    				// test
 	    				System.out.println("しりを取ってください");
 	    				
+						List<Siritori> siritoriList = new ArrayList<>();
+						ServletContext application = this.getServletContext();
+						application.setAttribute("siritoriList", siritoriList);
+	    				
 						errorMsg = "しりが取れていません";
 						request.setAttribute("errorMsg", errorMsg);
 						request.setAttribute("i", integer);
@@ -480,6 +515,10 @@ public class MainSiritoriServlet extends HttpServlet {
 						dispatcher.forward(request, response);
 	    			}
 	            } else { // 10~の終わり(elseへ)
+					List<Siritori> siritoriList = new ArrayList<>();
+					ServletContext application = this.getServletContext();
+					application.setAttribute("siritoriList", siritoriList);
+
 					errorMsg = "文字数が正しくありません。\n最初からやり直しです。";
 					request.setAttribute("errorMsg", errorMsg);
 					request.setAttribute("i", integer);
